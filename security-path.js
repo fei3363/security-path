@@ -43,6 +43,7 @@ const i18n = {
     noResultsHint: '試試其他關鍵字或分類',
     featuredCourses: '推薦課程',
     viewAll: '查看全部 →',
+    share: '分享連結',
     favorite: '收藏',
     edit: '編輯',
     reply: '回應',
@@ -68,6 +69,7 @@ const i18n = {
     noResultsHint: 'Try different keywords or categories',
     featuredCourses: 'Featured Courses',
     viewAll: 'View All →',
+    share: 'Share Link',
     favorite: 'Favorite',
     edit: 'Edit',
     reply: 'Reply',
@@ -252,7 +254,20 @@ document.addEventListener('DOMContentLoaded', () => {
   updateUILanguage();
   loadPaths();
   loadCourses();
+
+  // Listen for hash changes
+  window.addEventListener('hashchange', checkUrlHash);
 });
+
+function checkUrlHash() {
+  const hash = window.location.hash;
+  if (hash && hash.startsWith('#path-')) {
+    const pathId = parseInt(hash.replace('#path-', ''));
+    if (pathId && paths.length > 0) {
+      openDetailModal(pathId);
+    }
+  }
+}
 
 function initEventListeners() {
   // Search
@@ -337,6 +352,9 @@ async function loadPaths() {
     container.style.display = 'grid';
     filterAndRender();
     updateStats();
+
+    // Check URL hash after paths are loaded
+    checkUrlHash();
   };
 
   try {
@@ -653,13 +671,38 @@ function openDetailModal(id) {
   document.getElementById('detail-reply').onclick = () => window.open(path.url, '_blank');
   document.getElementById('detail-delete').onclick = () => window.open(path.url, '_blank');
 
+  // Share button
+  document.getElementById('detail-share').onclick = () => copyShareLink(path.id);
+
   overlay.classList.add('active');
   document.body.style.overflow = 'hidden';
+
+  // Update URL hash
+  history.pushState(null, '', `#path-${path.id}`);
 }
 
 function closeDetailModal() {
   document.getElementById('detail-overlay')?.classList.remove('active');
   document.body.style.overflow = '';
+
+  // Remove URL hash
+  history.pushState(null, '', window.location.pathname);
+}
+
+function copyShareLink(pathId) {
+  const url = `${window.location.origin}${window.location.pathname}#path-${pathId}`;
+  navigator.clipboard.writeText(url).then(() => {
+    showToast(currentLang === 'en' ? 'Link copied!' : '已複製連結！');
+  }).catch(() => {
+    // Fallback for older browsers
+    const textarea = document.createElement('textarea');
+    textarea.value = url;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    showToast(currentLang === 'en' ? 'Link copied!' : '已複製連結！');
+  });
 }
 
 // ==========================================
@@ -744,6 +787,7 @@ function updateUILanguage() {
   setText('no-results-hint', t('noResultsHint'));
   setText('courses-title-text', t('featuredCourses'));
   setText('view-all-btn', t('viewAll'));
+  setText('share-text', t('share'));
 }
 
 // ==========================================
