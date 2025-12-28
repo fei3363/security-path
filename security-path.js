@@ -596,7 +596,7 @@ function renderPathCard(path) {
           ${path.reactions > 0 ? `<span class="text-xs text-brown-400">👍 ${path.reactions}</span>` : ''}
         </div>
         <h3 class="font-semibold text-brown-900 mb-2 line-clamp-2">${path.title}</h3>
-        <p class="text-sm text-brown-500 line-clamp-2">${path.objectives?.substring(0, 100) || ''}</p>
+        <p class="text-sm text-brown-500 line-clamp-2">${stripMarkdown(path.objectives)?.substring(0, 100) || ''}</p>
         ${path.tags.length > 0 ? `
           <div class="flex flex-wrap gap-1 mt-3">
             ${path.tags.slice(0, 3).map(tag => `<span class="px-2 py-0.5 bg-brown-100 text-brown-600 text-xs rounded-full">${tag}</span>`).join('')}
@@ -923,4 +923,23 @@ function debounce(fn, delay) {
     clearTimeout(timer);
     timer = setTimeout(() => fn(...args), delay);
   };
+}
+
+function stripMarkdown(text) {
+  if (!text) return '';
+  return text
+    .replace(/#{1,6}\s*/g, '')           // Remove headers
+    .replace(/\*\*([^*]+)\*\*/g, '$1')   // Bold
+    .replace(/\*([^*]+)\*/g, '$1')       // Italic
+    .replace(/__([^_]+)__/g, '$1')       // Bold
+    .replace(/_([^_]+)_/g, '$1')         // Italic
+    .replace(/`([^`]+)`/g, '$1')         // Inline code
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // Links
+    .replace(/!\[([^\]]*)\]\([^)]+\)/g, '') // Images
+    .replace(/^\s*[-*+]\s+/gm, '')       // List items
+    .replace(/^\s*\d+\.\s+/gm, '')       // Numbered lists
+    .replace(/^\s*>/gm, '')              // Blockquotes
+    .replace(/\n{2,}/g, ' ')             // Multiple newlines to space
+    .replace(/\n/g, ' ')                 // Newlines to space
+    .trim();
 }
