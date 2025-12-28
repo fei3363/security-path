@@ -325,7 +325,8 @@ function initEventListeners() {
   // Detail modal close
   document.getElementById('detail-close')?.addEventListener('click', closeDetailModal);
   document.getElementById('detail-overlay')?.addEventListener('click', (e) => {
-    if (e.target.id === 'detail-overlay') closeDetailModal();
+    // Close if click is outside the modal content
+    if (!e.target.closest('.detail-modal')) closeDetailModal();
   });
 
   // Lightbox
