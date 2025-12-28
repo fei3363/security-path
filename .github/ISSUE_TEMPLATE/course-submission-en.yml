@@ -1,0 +1,76 @@
+name: "🎓 Add Featured Course"
+description: Add a course ad to the homepage carousel
+title: "[Course] "
+labels: ["course", "pending"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Add a course to the featured section on the homepage. It will be displayed after approval.
+
+  - type: input
+    id: title
+    attributes:
+      label: Course Name
+      description: Title of the course (recommended under 20 characters)
+      placeholder: e.g., Linux Penetration Testing Bootcamp
+    validations:
+      required: true
+
+  - type: input
+    id: url
+    attributes:
+      label: Course URL
+      description: The link to the course page
+      placeholder: https://feifei.tw/course/...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: badge
+    attributes:
+      label: Badge Type
+      description: Label shown on the top-left of the course card
+      options:
+        - Sale
+        - Free
+        - New
+        - Hot
+        - Limited
+        - None
+    validations:
+      required: true
+
+  - type: input
+    id: price_original
+    attributes:
+      label: Original Price (Optional)
+      description: If on sale, enter the original price (will show strikethrough)
+      placeholder: e.g., NT$20,000
+
+  - type: input
+    id: price_sale
+    attributes:
+      label: Current Price
+      description: The current selling price
+      placeholder: e.g., NT$5,299 or NT$0 (free)
+    validations:
+      required: true
+
+  - type: textarea
+    id: image
+    attributes:
+      label: Course Image
+      description: |
+        Drag and drop an image here!
+        Recommended size: 300x300 pixels (square)
+      placeholder: Drag image here
+    validations:
+      required: true
+
+  - type: input
+    id: order
+    attributes:
+      label: Sort Order (Optional)
+      description: Lower numbers appear first, default is 99
+      placeholder: e.g., 1

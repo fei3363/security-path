@@ -1,0 +1,120 @@
+name: 🛡️ 投稿學習路徑
+description: 分享你的資安學習路徑
+title: "[Path] "
+labels: ["pending"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感謝你投稿學習路徑！請填寫以下資訊，審核通過後會顯示在網站上。
+
+  - type: input
+    id: title
+    attributes:
+      label: 路徑名稱
+      description: 為這個學習路徑取一個清楚的名稱
+      placeholder: 例如：OSCP 滲透測試認證準備指南
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: 分類
+      description: 選擇最適合的分類
+      options:
+        - 網路安全
+        - 滲透測試
+        - Web安全
+        - 密碼學
+        - 惡意程式分析
+        - 雲端安全
+    validations:
+      required: true
+
+  - type: dropdown
+    id: difficulty
+    attributes:
+      label: 難度等級
+      description: 選擇適合的難度
+      options:
+        - 初級
+        - 中級
+        - 高級
+    validations:
+      required: true
+
+  - type: input
+    id: estimated_time
+    attributes:
+      label: 預計學習時間
+      description: 完成這個路徑大約需要多少時間
+      placeholder: 例如：40 小時 / 3 個月
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 詳細內容
+      description: 完整的學習路徑描述、步驟或大綱
+      placeholder: |
+        這個學習路徑將帶你從零開始學習...
+
+        ## 學習目標
+        - 了解網路基礎架構
+        - 學會使用常見工具
+
+        ## 學習步驟
+        1. 第一階段：基礎知識
+        2. 第二階段：實戰練習
+        3. 第三階段：進階技巧
+    validations:
+      required: true
+
+  - type: input
+    id: prerequisites
+    attributes:
+      label: 前置知識
+      description: 學習這個路徑之前需要具備的知識或技能
+      placeholder: 例如：基礎 Linux 操作、網路基礎概念
+
+  - type: textarea
+    id: resources
+    attributes:
+      label: 資源連結
+      description: 相關的學習資源、書籍、網站或工具（每行一個連結）
+      placeholder: |
+        https://example.com/course
+        https://github.com/example/repo
+        https://www.youtube.com/watch?v=example
+
+  - type: input
+    id: tags
+    attributes:
+      label: 標籤
+      description: 用逗號分隔，方便搜尋
+      placeholder: 例如：OSCP, Kali Linux, 滲透測試
+
+  - type: textarea
+    id: image
+    attributes:
+      label: 預覽圖片（選填）
+      description: |
+        直接拖曳或貼上圖片到這裡！
+        建議上傳路徑相關的示意圖、架構圖或證書截圖
+      placeholder: 把圖片拖到這裡
+
+  - type: input
+    id: author
+    attributes:
+      label: 作者名稱（選填）
+      description: 你的名字或暱稱
+      placeholder: 你的名字
+
+  - type: input
+    id: author_url
+    attributes:
+      label: 作者網站（選填）
+      description: 你的個人網站或社群連結
+      placeholder: https://...

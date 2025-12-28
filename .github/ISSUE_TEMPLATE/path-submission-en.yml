@@ -1,0 +1,120 @@
+name: 🛡️ Submit Learning Path
+description: Share your cybersecurity learning path
+title: "[Path] "
+labels: ["pending"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for submitting a learning path! Fill in the details below. Once approved, it will be displayed on the website.
+
+  - type: input
+    id: title
+    attributes:
+      label: Path Name
+      description: Give this learning path a clear name
+      placeholder: e.g., OSCP Penetration Testing Certification Guide
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      description: Choose the most appropriate category
+      options:
+        - Network Security
+        - Penetration Testing
+        - Web Security
+        - Cryptography
+        - Malware Analysis
+        - Cloud Security
+    validations:
+      required: true
+
+  - type: dropdown
+    id: difficulty
+    attributes:
+      label: Difficulty Level
+      description: Select the appropriate difficulty
+      options:
+        - Beginner
+        - Intermediate
+        - Advanced
+    validations:
+      required: true
+
+  - type: input
+    id: estimated_time
+    attributes:
+      label: Estimated Time
+      description: How long does it take to complete this path
+      placeholder: e.g., 40 hours / 3 months
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Complete learning path description, steps or outline
+      placeholder: |
+        This learning path will take you from zero to...
+
+        ## Learning Objectives
+        - Understand network infrastructure
+        - Learn to use common tools
+
+        ## Learning Steps
+        1. Phase 1: Fundamentals
+        2. Phase 2: Hands-on Practice
+        3. Phase 3: Advanced Techniques
+    validations:
+      required: true
+
+  - type: input
+    id: prerequisites
+    attributes:
+      label: Prerequisites
+      description: Knowledge or skills required before starting this path
+      placeholder: e.g., Basic Linux, Networking fundamentals
+
+  - type: textarea
+    id: resources
+    attributes:
+      label: Resource Links
+      description: Related learning resources, books, websites or tools (one per line)
+      placeholder: |
+        https://example.com/course
+        https://github.com/example/repo
+        https://www.youtube.com/watch?v=example
+
+  - type: input
+    id: tags
+    attributes:
+      label: Tags
+      description: Comma-separated for easy searching
+      placeholder: e.g., OSCP, Kali Linux, Penetration Testing
+
+  - type: textarea
+    id: image
+    attributes:
+      label: Preview Image (Optional)
+      description: |
+        Drag and drop images here!
+        Recommended: diagrams, architecture charts, or certification screenshots
+      placeholder: Drag images here
+
+  - type: input
+    id: author
+    attributes:
+      label: Author Name (Optional)
+      description: Your name or nickname
+      placeholder: Your name
+
+  - type: input
+    id: author_url
+    attributes:
+      label: Author Website (Optional)
+      description: Your personal website or social link
+      placeholder: https://...

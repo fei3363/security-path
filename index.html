@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>資安學習路徑資料庫 - Security Learning Path Database</title>
+
+  <!-- Favicon -->
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
+
+  <!-- SEO Meta Tags -->
+  <meta name="description"
+    content="Security Learning Path 是一個免費的資安學習路徑資料庫，涵蓋網路安全、滲透測試、Web安全、密碼學、惡意程式分析、雲端安全等領域的學習資源與路徑指南。">
+  <meta name="keywords"
+    content="資安學習, cybersecurity, 滲透測試, penetration testing, web security, 網路安全, 密碼學, 資訊安全, CTF, 駭客, OSCP, 學習路徑">
+  <meta name="author" content="feifei">
+  <link rel="canonical" href="https://path.feifei.tw/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://path.feifei.tw/">
+  <meta property="og:title" content="資安學習路徑資料庫 - Security Learning Path Database">
+  <meta property="og:description" content="免費的資安學習路徑資料庫，涵蓋網路安全、滲透測試、Web安全、密碼學等領域的學習資源。">
+  <meta property="og:image" content="https://path.feifei.tw/og-image.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="資安學習路徑資料庫 - Security Learning Path Database">
+
+  <!-- Theme Color -->
+  <meta name="theme-color" content="#44403c">
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZRF9T23LVK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-ZRF9T23LVK');
+  </script>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brown: {
+              50: '#fdf8f6',
+              100: '#f2e8e5',
+              200: '#eaddd7',
+              300: '#e0cfc7',
+              400: '#d2bab0',
+              500: '#bfa094',
+              600: '#a18072',
+              700: '#977669',
+              800: '#846358',
+              900: '#43302b',
+              950: '#2d1f1a',
+            }
+          },
+          fontFamily: {
+            display: ['Orbitron', 'sans-serif'],
+            body: ['Noto Sans TC', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="security-path.css?v=2.1.0">
+
+</head>
+
+<body class="bg-brown-50 text-brown-900 font-body min-h-screen">
+  <!-- Background -->
+  <div class="fixed inset-0 -z-10 overflow-hidden">
+    <div class="absolute -top-40 -right-40 w-96 h-96 bg-brown-200 rounded-full blur-3xl opacity-50"></div>
+    <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-brown-300 rounded-full blur-3xl opacity-40"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-lg border-b border-brown-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 py-3">
+      <div class="flex items-center justify-between gap-4">
+        <!-- Logo -->
+        <div class="flex items-center gap-3">
+          <span class="text-3xl">🛡️</span>
+          <div class="hidden sm:block">
+            <div class="font-display font-bold text-brown-900 text-lg">資安學習路徑</div>
+            <div class="text-brown-500 text-xs">Security Learning Path Database</div>
+          </div>
+        </div>
+
+        <!-- Search -->
+        <div class="flex-1 max-w-xl">
+          <div class="relative">
+            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-brown-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8" stroke-width="2"/>
+              <path d="M21 21l-4.35-4.35" stroke-width="2"/>
+            </svg>
+            <input type="text" id="search-input"
+              class="w-full pl-10 pr-4 py-2.5 bg-brown-100 border border-brown-200 rounded-xl text-brown-900 placeholder-brown-400 focus:outline-none focus:ring-2 focus:ring-brown-400 focus:border-transparent transition"
+              placeholder="搜尋學習路徑...">
+            <kbd class="hidden sm:block absolute right-3 top-1/2 -translate-y-1/2 px-2 py-0.5 bg-brown-200 text-brown-500 text-xs rounded font-mono">⌘K</kbd>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center gap-2">
+          <a href="https://github.com/fei3363/security-path" target="_blank"
+            class="p-2.5 text-brown-600 hover:text-brown-900 hover:bg-brown-100 rounded-lg transition">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+          </a>
+          <button id="lang-btn" onclick="toggleLanguage()"
+            class="px-3 py-2 text-sm font-semibold text-brown-600 hover:text-brown-900 hover:bg-brown-100 rounded-lg transition font-display">
+            EN
+          </button>
+          <button id="add-btn"
+            class="flex items-center gap-2 px-4 py-2.5 bg-brown-800 hover:bg-brown-700 text-white rounded-xl font-semibold transition shadow-lg shadow-brown-900/20">
+            <span class="text-lg">+</span>
+            <span class="hidden sm:inline" id="add-btn-text">新增路徑</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Filter Bar -->
+  <section class="sticky top-[65px] z-40 bg-white/80 backdrop-blur-lg border-b border-brown-100">
+    <div class="max-w-7xl mx-auto px-4 py-3">
+      <div class="flex flex-col lg:flex-row lg:items-center gap-3">
+        <!-- Dynamic Categories -->
+        <div class="flex-1 overflow-x-auto scrollbar-hide">
+          <div class="flex items-center gap-2" id="category-pills">
+            <button class="pill active flex items-center gap-2 px-4 py-2 bg-brown-800 text-white rounded-full text-sm font-medium whitespace-nowrap transition" data-category="all">
+              <span>◈</span>
+              <span id="cat-all-text">全部</span>
+            </button>
+            <!-- Categories will be dynamically generated -->
+          </div>
+        </div>
+
+        <!-- Difficulty Filter -->
+        <div class="flex items-center gap-2 border-l border-brown-200 pl-3">
+          <button class="diff-btn active px-3 py-1.5 text-sm rounded-lg bg-brown-100 text-brown-800 font-medium transition" data-level="all" id="diff-all">全部</button>
+          <button class="diff-btn px-3 py-1.5 text-sm rounded-lg hover:bg-green-100 text-brown-600 font-medium transition" data-level="beginner">🟢 初級</button>
+          <button class="diff-btn px-3 py-1.5 text-sm rounded-lg hover:bg-yellow-100 text-brown-600 font-medium transition" data-level="intermediate">🟡 中級</button>
+          <button class="diff-btn px-3 py-1.5 text-sm rounded-lg hover:bg-red-100 text-brown-600 font-medium transition" data-level="advanced">🔴 高級</button>
+        </div>
+
+        <!-- View Toggle -->
+        <div class="flex items-center gap-1 bg-brown-100 rounded-lg p-1">
+          <button class="view-btn active p-2 rounded-md bg-white shadow-sm text-brown-800" data-view="grid" title="網格檢視">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <rect x="3" y="3" width="7" height="7" rx="1"/>
+              <rect x="14" y="3" width="7" height="7" rx="1"/>
+              <rect x="3" y="14" width="7" height="7" rx="1"/>
+              <rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+          </button>
+          <button class="view-btn p-2 rounded-md text-brown-500 hover:text-brown-800" data-view="list" title="列表檢視">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <rect x="3" y="4" width="18" height="4" rx="1"/>
+              <rect x="3" y="10" width="18" height="4" rx="1"/>
+              <rect x="3" y="16" width="18" height="4" rx="1"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Bar -->
+  <section class="max-w-7xl mx-auto px-4 py-4">
+    <div class="flex items-center justify-center gap-8 text-center">
+      <div>
+        <div class="text-2xl font-display font-bold text-brown-800" id="total-paths">0</div>
+        <div class="text-sm text-brown-500" id="stat-paths-label">學習路徑</div>
+      </div>
+      <div class="w-px h-8 bg-brown-200"></div>
+      <div>
+        <div class="text-2xl font-display font-bold text-brown-800" id="total-favorites">0</div>
+        <div class="text-sm text-brown-500" id="stat-favorites-label">收藏</div>
+      </div>
+      <div class="w-px h-8 bg-brown-200"></div>
+      <div>
+        <div class="text-2xl font-display font-bold text-brown-800" id="total-resources">0</div>
+        <div class="text-sm text-brown-500" id="stat-resources-label">學習資源</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Courses -->
+  <section class="max-w-7xl mx-auto px-4 py-4" id="featured-courses" style="display: none;">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="flex items-center gap-2 text-lg font-semibold text-brown-900">
+        <span>🎓</span>
+        <span id="courses-title-text">推薦課程</span>
+      </h2>
+      <a href="https://feifei.tw/shop/" target="_blank"
+        class="text-sm text-brown-600 hover:text-brown-900 font-medium transition" id="view-all-btn">
+        查看全部 →
+      </a>
+    </div>
+    <div class="relative">
+      <button id="carousel-prev" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-10 h-10 bg-white shadow-lg rounded-full flex items-center justify-center text-brown-600 hover:text-brown-900 hover:bg-brown-50 transition">‹</button>
+      <div class="overflow-x-auto scrollbar-hide" id="courses-carousel">
+        <div class="flex gap-4 pb-2" id="courses-list">
+          <!-- Courses loaded dynamically -->
+        </div>
+      </div>
+      <button id="carousel-next" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-10 h-10 bg-white shadow-lg rounded-full flex items-center justify-center text-brown-600 hover:text-brown-900 hover:bg-brown-50 transition">›</button>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 py-6">
+    <!-- Loading State -->
+    <div id="loading-state" class="flex flex-col items-center justify-center py-20">
+      <div class="w-12 h-12 border-4 border-brown-200 border-t-brown-600 rounded-full animate-spin mb-4"></div>
+      <p class="text-brown-500" id="loading-text">載入中...</p>
+    </div>
+
+    <!-- Paths Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="paths-container" style="display: none;">
+      <!-- Generated by JS -->
+    </div>
+
+    <!-- Empty State -->
+    <div id="empty-state" class="flex flex-col items-center justify-center py-20 text-center" style="display: none;">
+      <div class="text-6xl mb-4">🛡️</div>
+      <h3 class="text-xl font-semibold text-brown-800 mb-2" id="empty-title">還沒有學習路徑</h3>
+      <p class="text-brown-500 mb-6" id="empty-hint">點擊「新增路徑」分享你的資安學習經驗</p>
+      <button onclick="document.getElementById('add-btn').click()"
+        class="px-6 py-3 bg-brown-800 hover:bg-brown-700 text-white rounded-xl font-semibold transition" id="empty-add-btn">
+        + 新增第一個學習路徑
+      </button>
+    </div>
+
+    <!-- No Results -->
+    <div id="no-results" class="flex flex-col items-center justify-center py-20 text-center" style="display: none;">
+      <div class="text-6xl mb-4">🔍</div>
+      <h3 class="text-xl font-semibold text-brown-800 mb-2" id="no-results-title">找不到相關路徑</h3>
+      <p class="text-brown-500" id="no-results-hint">試試其他關鍵字或分類</p>
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex items-center justify-center gap-2 mt-8" id="pagination" style="display: none;">
+      <!-- Generated by JS -->
+    </div>
+  </main>
+
+  <!-- Detail Modal -->
+  <div id="detail-overlay" class="fixed inset-0 z-50 bg-brown-900/60 backdrop-blur-sm opacity-0 invisible transition-all duration-300">
+    <div class="min-h-screen flex items-center justify-center p-4">
+      <div class="detail-modal bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden transform scale-95 transition-transform duration-300">
+        <button id="detail-close" class="absolute top-4 right-4 w-10 h-10 bg-brown-100 hover:bg-brown-200 rounded-full flex items-center justify-center text-brown-600 text-xl transition z-10">×</button>
+
+        <div class="flex flex-col h-full">
+          <!-- Hidden image container for JS compatibility -->
+          <div id="detail-image" class="hidden"></div>
+
+          <!-- Content -->
+          <div class="w-full p-6 overflow-y-auto max-h-[90vh]">
+            <div class="mb-4">
+              <div class="flex items-center gap-2 mb-2">
+                <span id="detail-category" class="px-3 py-1 bg-brown-800 text-white text-xs font-semibold rounded-full">分類</span>
+                <span id="detail-difficulty" class="px-3 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full">初級</span>
+                <span id="detail-time" class="text-sm text-brown-500">⏱️ 40 小時</span>
+              </div>
+              <h2 id="detail-title" class="text-2xl font-bold text-brown-900 mb-2">標題</h2>
+              <div id="detail-author" class="text-sm text-brown-500"></div>
+            </div>
+
+            <!-- Prerequisites -->
+            <div id="detail-prerequisites" class="mb-4 p-4 bg-amber-50 border border-amber-200 rounded-xl" style="display: none;">
+              <h4 class="font-semibold text-amber-800 mb-2">📋 前置知識</h4>
+              <p id="detail-prerequisites-text" class="text-amber-700 text-sm"></p>
+            </div>
+
+            <!-- Learning Objectives -->
+            <div class="mb-4">
+              <h3 class="font-semibold text-brown-800 mb-2">🎯 學習目標</h3>
+              <div id="detail-objectives" class="text-brown-600 text-sm leading-relaxed"></div>
+            </div>
+
+            <!-- Resources -->
+            <div id="detail-resources" class="mb-4 p-4 bg-brown-50 border border-brown-200 rounded-xl">
+              <h4 class="font-semibold text-brown-800 mb-2">📚 相關文章與資源</h4>
+              <div id="detail-resources-list" class="space-y-2">
+                <!-- Generated by JS -->
+              </div>
+            </div>
+
+            <!-- Tags -->
+            <div id="detail-tags" class="flex flex-wrap gap-2 mb-4"></div>
+
+            <!-- Actions -->
+            <div class="flex flex-wrap gap-2 pt-4 border-t border-brown-200">
+              <button id="detail-favorite" class="flex items-center gap-2 px-4 py-2 bg-brown-100 hover:bg-red-100 text-brown-700 hover:text-red-600 rounded-lg transition">
+                <span class="heart">♡</span>
+                <span id="favorite-text">收藏</span>
+              </button>
+              <button id="detail-edit" class="flex items-center gap-2 px-4 py-2 bg-brown-100 hover:bg-brown-200 text-brown-700 rounded-lg transition">
+                ✏️ <span id="edit-text">編輯</span>
+              </button>
+              <button id="detail-reply" class="flex items-center gap-2 px-4 py-2 bg-brown-100 hover:bg-brown-200 text-brown-700 rounded-lg transition">
+                💬 <span id="detail-reply-text">回應</span>
+              </button>
+              <button id="detail-delete" class="flex items-center gap-2 px-4 py-2 bg-brown-100 hover:bg-red-100 text-brown-700 hover:text-red-600 rounded-lg transition">
+                🗑️ <span id="delete-text">刪除</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 px-6 py-3 bg-brown-900 text-white rounded-xl shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 z-50">
+    <span id="toast-icon" class="mr-2">✓</span>
+    <span id="toast-message"></span>
+  </div>
+
+  <!-- Lightbox -->
+  <div id="lightbox-overlay" class="fixed inset-0 z-[100] bg-brown-900/95 opacity-0 invisible transition-all duration-300 flex items-center justify-center">
+    <button id="lightbox-close" class="absolute top-4 right-4 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full text-white text-2xl transition">×</button>
+    <button id="lightbox-prev" class="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full text-white text-2xl transition">‹</button>
+    <button id="lightbox-next" class="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full text-white text-2xl transition">›</button>
+    <div id="lightbox-loader" class="absolute">
+      <div class="w-12 h-12 border-4 border-white/20 border-t-white rounded-full animate-spin"></div>
+    </div>
+    <img id="lightbox-image" class="max-w-[90vw] max-h-[90vh] object-contain" src="" alt="">
+    <div id="lightbox-counter" class="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/70 text-sm"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-brown-900 text-brown-300 py-8 mt-12">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+      <div class="flex items-center justify-center gap-2 mb-2">
+        <span class="text-2xl">🛡️</span>
+        <span class="font-display font-bold text-white">資安學習路徑資料庫</span>
+      </div>
+      <p class="text-sm mb-4">資安這條路，飛飛來領路</p>
+      <div class="flex items-center justify-center gap-4 text-sm">
+        <a href="https://feifei.tw" target="_blank" class="hover:text-white transition">feifei.tw</a>
+        <span class="text-brown-600">|</span>
+        <a href="https://github.com/fei3363/security-path" target="_blank" class="hover:text-white transition">GitHub</a>
+        <span class="text-brown-600">|</span>
+        <a href="https://feifei.tw/shop/" target="_blank" class="hover:text-white transition">課程商店</a>
+      </div>
+      <p class="text-xs text-brown-500 mt-4">© 2025 feifei.tw 製作</p>
+    </div>
+  </footer>
+
+  <script src="security-path.js?v=2.1.1"></script>
+</body>
+
+</html>

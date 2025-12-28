@@ -1,0 +1,76 @@
+name: "🎓 新增推薦課程"
+description: 新增課程廣告到首頁輪播
+title: "[Course] "
+labels: ["course", "pending"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        新增一個課程到首頁推薦區塊。審核通過後會顯示在網站上。
+
+  - type: input
+    id: title
+    attributes:
+      label: 課程名稱
+      description: 課程的標題（建議 20 字內）
+      placeholder: 例如：Linux 滲透測試訓練營
+    validations:
+      required: true
+
+  - type: input
+    id: url
+    attributes:
+      label: 課程連結
+      description: 點擊後前往的網址
+      placeholder: https://feifei.tw/course/...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: badge
+    attributes:
+      label: 標籤類型
+      description: 顯示在課程卡片左上角的標籤
+      options:
+        - 特價
+        - 免費
+        - 新課程
+        - 熱門
+        - 限時
+        - 無
+    validations:
+      required: true
+
+  - type: input
+    id: price_original
+    attributes:
+      label: 原價（選填）
+      description: 如果有特價，填寫原價（會顯示刪除線）
+      placeholder: 例如：NT$20,000
+
+  - type: input
+    id: price_sale
+    attributes:
+      label: 售價
+      description: 目前售價
+      placeholder: 例如：NT$5,299 或 NT$0（免費）
+    validations:
+      required: true
+
+  - type: textarea
+    id: image
+    attributes:
+      label: 課程圖片
+      description: |
+        拖曳圖片到這裡上傳！
+        建議尺寸：300x300 像素（正方形）
+      placeholder: 拖曳圖片到這裡
+    validations:
+      required: true
+
+  - type: input
+    id: order
+    attributes:
+      label: 排序（選填）
+      description: 數字越小越前面，預設 99
+      placeholder: 例如：1
