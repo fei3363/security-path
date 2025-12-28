@@ -17,18 +17,12 @@ body:
     validations:
       required: true
 
-  - type: dropdown
+  - type: input
     id: category
     attributes:
       label: 分類
-      description: 選擇最適合的分類
-      options:
-        - 網路安全
-        - 滲透測試
-        - Web安全
-        - 密碼學
-        - 惡意程式分析
-        - 雲端安全
+      description: 輸入學習路徑的分類
+      placeholder: 例如：網路安全、滲透測試、Web安全、密碼學、惡意程式分析、雲端安全
     validations:
       required: true
 

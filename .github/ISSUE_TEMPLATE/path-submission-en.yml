@@ -17,18 +17,12 @@ body:
     validations:
       required: true
 
-  - type: dropdown
+  - type: input
     id: category
     attributes:
       label: Category
-      description: Choose the most appropriate category
-      options:
-        - Network Security
-        - Penetration Testing
-        - Web Security
-        - Cryptography
-        - Malware Analysis
-        - Cloud Security
+      description: Enter the category for this learning path
+      placeholder: e.g., Network Security, Penetration Testing, Web Security, Cryptography, Malware Analysis, Cloud Security
     validations:
       required: true
 
