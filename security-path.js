@@ -359,10 +359,26 @@ function parseIssuePath(issue) {
   try {
     const body = issue.body || '';
 
+    // All form field headers (used to detect section boundaries)
+    const formFields = [
+      '路徑名稱', 'Path Name',
+      '分類', 'Category',
+      '難度等級', 'Difficulty Level',
+      '預計學習時間', 'Estimated Time',
+      '詳細內容', 'Description', '學習目標', 'Learning Objectives',
+      '前置知識', 'Prerequisites',
+      '資源連結', 'Resource Links',
+      '標籤', 'Tags',
+      '預覽圖片（選填）', 'Preview Image',
+      '作者名稱（選填）', 'Author Name',
+      '作者網站（選填）', 'Author Website'
+    ];
+    const fieldPattern = formFields.map(f => f.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
+
     const getValue = (zh, en) => {
-      const regex = new RegExp(`### (?:${zh}|${en})\\s*\\n([\\s\\S]*?)(?=\\n###|$)`, 'i');
+      const regex = new RegExp(`### (?:${zh}|${en})\\s*\\n([\\s\\S]*?)(?=\\n### (?:${fieldPattern})|$)`, 'i');
       const match = body.match(regex);
-      return match ? match[1].trim().replace(/^###.*$/gm, '').trim() : '';
+      return match ? match[1].trim() : '';
     };
 
     const title = getValue('路徑名稱', 'Path Name') || issue.title.replace('[Path]', '').trim();
@@ -591,7 +607,7 @@ function openDetailModal(id) {
   document.getElementById('detail-time').textContent = path.estimatedTime ? `⏱️ ${path.estimatedTime}` : '';
   document.getElementById('detail-title').textContent = path.title;
   document.getElementById('detail-author').textContent = path.author ? `by ${path.author}` : '';
-  document.getElementById('detail-objectives').innerHTML = path.objectives?.replace(/\n/g, '<br>') || '';
+  document.getElementById('detail-objectives').innerHTML = path.objectives ? marked.parse(path.objectives) : '';
 
   // Prerequisites
   const prereqEl = document.getElementById('detail-prerequisites');
