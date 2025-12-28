@@ -30,55 +30,39 @@ let categories = new Map(); // Dynamic categories
 const i18n = {
   'zh-TW': {
     searchPlaceholder: '搜尋學習路徑...',
-    addPath: '新增路徑',
     all: '全部',
     paths: '學習路徑',
-    favorites: '收藏',
     resources: '學習資源',
     loading: '載入中...',
     noPaths: '還沒有學習路徑',
-    noPathsHint: '點擊「新增路徑」分享你的資安學習經驗',
-    addFirstPath: '+ 新增第一個學習路徑',
+    noPathsHint: '目前沒有學習路徑資料',
     noResults: '找不到相關路徑',
     noResultsHint: '試試其他關鍵字或分類',
     featuredCourses: '推薦課程',
     viewAll: '查看全部 →',
     share: '分享連結',
-    favorite: '收藏',
-    edit: '編輯',
-    reply: '回應',
-    delete: '刪除',
     prerequisites: '📋 前置知識',
     objectives: '🎯 學習目標',
     resourcesTitle: '📚 相關文章與資源',
-    copied: '已複製！',
-    issueTemplate: 'path-submission.yml'
+    copied: '已複製！'
   },
   'en': {
     searchPlaceholder: 'Search learning paths...',
-    addPath: 'Add Path',
     all: 'All',
     paths: 'Paths',
-    favorites: 'Favorites',
     resources: 'Resources',
     loading: 'Loading...',
     noPaths: 'No learning paths yet',
-    noPathsHint: 'Click "Add Path" to share your experience',
-    addFirstPath: '+ Add First Path',
+    noPathsHint: 'No learning path data available',
     noResults: 'No results found',
     noResultsHint: 'Try different keywords or categories',
     featuredCourses: 'Featured Courses',
     viewAll: 'View All →',
     share: 'Share Link',
-    favorite: 'Favorite',
-    edit: 'Edit',
-    reply: 'Reply',
-    delete: 'Delete',
     prerequisites: '📋 Prerequisites',
     objectives: '🎯 Learning Objectives',
     resourcesTitle: '📚 Related Resources',
-    copied: 'Copied!',
-    issueTemplate: 'path-submission-en.yml'
+    copied: 'Copied!'
   }
 };
 
@@ -302,8 +286,6 @@ function initEventListeners() {
     });
   }
 
-  // Add path button
-  document.getElementById('add-btn')?.addEventListener('click', openSubmitPage);
 
   // View toggle
   document.querySelectorAll('.view-btn').forEach(btn => {
@@ -582,7 +564,6 @@ function renderPaths() {
 function renderPathCard(path) {
   const diffStyle = difficultyStyles[path.difficulty] || difficultyStyles.beginner;
   const imageUrl = path.images[0] ? `https://wsrv.nl/?url=${encodeURIComponent(path.images[0])}&w=400&q=80` : '';
-  const isFavorited = getFavorites().includes(path.id);
 
   return `
     <div class="path-card bg-white rounded-2xl border border-brown-200 overflow-hidden cursor-pointer shadow-sm hover:shadow-xl hover:border-brown-300" data-id="${path.id}">
@@ -599,9 +580,6 @@ function renderPathCard(path) {
             ⏱️ ${path.estimatedTime}
           </div>
         ` : ''}
-        <button class="absolute bottom-2 right-2 w-8 h-8 bg-white/90 backdrop-blur rounded-full flex items-center justify-center text-sm transition hover:bg-red-100 ${isFavorited ? 'text-red-500' : 'text-brown-400'}" onclick="event.stopPropagation(); toggleFavorite(${path.id})">
-          ${isFavorited ? '♥' : '♡'}
-        </button>
       </div>
       <div class="p-4">
         <div class="flex items-center gap-2 mb-2">
@@ -678,14 +656,6 @@ function openDetailModal(id) {
     imageContainer.innerHTML = `<div class="text-6xl">${categoryIcons[path.category] || '🛡️'}</div>`;
   }
 
-  // Actions
-  const isFavorited = getFavorites().includes(path.id);
-  document.getElementById('detail-favorite').querySelector('.heart').textContent = isFavorited ? '♥' : '♡';
-  document.getElementById('detail-favorite').onclick = () => toggleFavorite(path.id);
-  document.getElementById('detail-edit').onclick = () => window.open(path.url, '_blank');
-  document.getElementById('detail-reply').onclick = () => window.open(path.url, '_blank');
-  document.getElementById('detail-delete').onclick = () => window.open(path.url, '_blank');
-
   // Share button
   document.getElementById('detail-share').onclick = () => copyShareLink(path.id);
 
@@ -755,31 +725,10 @@ function closeLightbox() {
 }
 
 // ==========================================
-// Favorites
-// ==========================================
-function getFavorites() {
-  return JSON.parse(localStorage.getItem('favorites') || '[]');
-}
-
-function toggleFavorite(id) {
-  let favorites = getFavorites();
-  if (favorites.includes(id)) {
-    favorites = favorites.filter(f => f !== id);
-  } else {
-    favorites.push(id);
-  }
-  localStorage.setItem('favorites', JSON.stringify(favorites));
-  renderPaths();
-  updateStats();
-  showToast(favorites.includes(id) ? '已加入收藏' : '已取消收藏');
-}
-
-// ==========================================
 // Stats
 // ==========================================
 function updateStats() {
   document.getElementById('total-paths').textContent = paths.length;
-  document.getElementById('total-favorites').textContent = getFavorites().length;
 
   const totalResources = paths.reduce((sum, p) => sum + p.resources.length, 0);
   document.getElementById('total-resources').textContent = totalResources;
@@ -808,30 +757,18 @@ function updateUILanguage() {
   const searchInput = document.getElementById('search-input');
   if (searchInput) searchInput.setAttribute('placeholder', t('searchPlaceholder'));
 
-  setText('add-btn-text', t('addPath'));
   setText('cat-all-text', t('all'));
   setText('diff-all', t('all'));
   setText('stat-paths-label', t('paths'));
-  setText('stat-favorites-label', t('favorites'));
   setText('stat-resources-label', t('resources'));
   setText('loading-text', t('loading'));
   setText('empty-title', t('noPaths'));
   setText('empty-hint', t('noPathsHint'));
-  setText('empty-add-btn', t('addFirstPath'));
   setText('no-results-title', t('noResults'));
   setText('no-results-hint', t('noResultsHint'));
   setText('courses-title-text', t('featuredCourses'));
   setText('view-all-btn', t('viewAll'));
   setText('share-text', t('share'));
-}
-
-// ==========================================
-// Submit Page
-// ==========================================
-function openSubmitPage() {
-  const { owner, repo } = GITHUB_CONFIG;
-  const template = t('issueTemplate');
-  window.open(`https://github.com/${owner}/${repo}/issues/new?template=${template}`, '_blank');
 }
 
 // ==========================================
