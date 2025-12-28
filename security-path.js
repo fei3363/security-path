@@ -377,7 +377,9 @@ async function loadPaths() {
     const response = await fetch(url);
     if (response.ok) {
       const issues = await response.json();
-      paths = issues.map(parseIssuePath).filter(Boolean);
+      // Filter out issues with [Course] prefix - those go to courses section
+      const pathIssues = issues.filter(issue => !issue.title.startsWith('[Course]'));
+      paths = pathIssues.map(parseIssuePath).filter(Boolean);
     }
     showPaths();
   } catch (error) {
@@ -850,13 +852,15 @@ async function loadCourses() {
   const list = document.getElementById('courses-list');
 
   try {
-    const { owner, repo } = GITHUB_CONFIG;
-    const url = `https://api.github.com/repos/${owner}/${repo}/issues?labels=course,approved&state=open&per_page=20`;
+    const { owner, repo, label } = GITHUB_CONFIG;
+    const url = `https://api.github.com/repos/${owner}/${repo}/issues?labels=${label}&state=open&per_page=100`;
     const response = await fetch(url);
     if (!response.ok) return;
 
     const issues = await response.json();
-    const courses = issues.map(parseCourse).filter(Boolean);
+    // Filter issues with [Course] prefix in title
+    const courseIssues = issues.filter(issue => issue.title.startsWith('[Course]'));
+    const courses = courseIssues.map(parseCourse).filter(Boolean);
 
     if (courses.length === 0) return;
 
@@ -893,10 +897,16 @@ function parseCourse(issue) {
   const imageContent = getValue('課程圖片', 'Course Image');
 
   let image = '';
-  const imgMatch = imageContent.match(/!\[.*?\]\((https?:\/\/[^\s)]+)\)/);
-  if (imgMatch) image = imgMatch[1];
+  // Try multiple image patterns: markdown ![](url) and HTML <img src="url">
+  const markdownMatch = imageContent.match(/!\[.*?\]\((https?:\/\/[^\s)]+)\)/) ||
+                        body.match(/!\[.*?\]\((https?:\/\/[^\s)]+)\)/);
+  const htmlMatch = imageContent.match(/<img[^>]+src=["'](https?:\/\/[^"']+)["']/) ||
+                    body.match(/<img[^>]+src=["'](https?:\/\/[^"']+)["']/);
+  if (markdownMatch) image = markdownMatch[1];
+  else if (htmlMatch) image = htmlMatch[1];
 
-  if (!title || !url || !image) return null;
+  // Only require title and url, image is optional
+  if (!title || !url) return null;
 
   return { id: issue.number, title, url, badge, priceOriginal, priceSale, image };
 }
@@ -906,21 +916,25 @@ function renderCourseCard(course) {
     '特價': 'bg-red-500', 'Sale': 'bg-red-500',
     '免費': 'bg-green-500', 'Free': 'bg-green-500',
     '新課程': 'bg-blue-500', 'New': 'bg-blue-500',
-    '熱門': 'bg-orange-500', 'Hot': 'bg-orange-500'
+    '熱門': 'bg-orange-500', 'Hot': 'bg-orange-500',
+    '限時': 'bg-purple-500'
   };
   const badgeClass = badgeMap[course.badge] || '';
 
   return `
     <a href="${course.url}" target="_blank" class="course-card flex-shrink-0 w-48 bg-white rounded-xl border border-brown-200 overflow-hidden shadow-sm hover:shadow-lg">
-      <div class="relative h-32 bg-brown-100">
-        <img src="${course.image}" alt="${course.title}" class="w-full h-full object-cover" loading="lazy">
+      <div class="relative h-32 bg-brown-100 flex items-center justify-center">
+        ${course.image
+          ? `<img src="${course.image}" alt="${course.title}" class="w-full h-full object-cover" loading="lazy">`
+          : `<span class="text-4xl">🎓</span>`
+        }
         ${badgeClass ? `<div class="absolute top-2 left-2 px-2 py-0.5 ${badgeClass} text-white text-xs font-bold rounded-full">${course.badge}</div>` : ''}
       </div>
       <div class="p-3">
         <h3 class="text-sm font-medium text-brown-900 line-clamp-2 mb-2">${course.title}</h3>
         <div class="flex items-center gap-2">
           ${course.priceOriginal ? `<span class="text-xs text-brown-400 line-through">${course.priceOriginal}</span>` : ''}
-          <span class="text-sm font-bold ${course.priceSale?.includes('0') && !course.priceSale.match(/[1-9]/) ? 'text-green-600' : 'text-red-600'}">${course.priceSale}</span>
+          ${course.priceSale ? `<span class="text-sm font-bold text-red-600">${course.priceSale}</span>` : ''}
         </div>
       </div>
     </a>
