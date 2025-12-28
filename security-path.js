@@ -251,12 +251,16 @@ const samplePaths = [
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
   // Configure marked.js to open links in new tab
-  const renderer = new marked.Renderer();
-  renderer.link = function(href, title, text) {
-    const titleAttr = title ? ` title="${title}"` : '';
-    return `<a href="${href}"${titleAttr} target="_blank" rel="noopener noreferrer">${text}</a>`;
-  };
-  marked.setOptions({ renderer });
+  marked.use({
+    renderer: {
+      link(token) {
+        const href = token.href || '';
+        const title = token.title ? ` title="${token.title}"` : '';
+        const text = token.text || '';
+        return `<a href="${href}"${title} target="_blank" rel="noopener noreferrer">${text}</a>`;
+      }
+    }
+  });
 
   initEventListeners();
   updateUILanguage();
